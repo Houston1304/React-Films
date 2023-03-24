@@ -70,33 +70,55 @@ for (let i = 0; i < list.length; i++) {
 
 const Pagination = () => {
   const [pageNumber, setPage] = useState(1);
-  const maxPage = 10;
 
-  const [start, setStart] = useState(1);
-  const [finish, setFinish] = useState(start + 6);
+  const maxPage = Math.ceil(list.length / 6);
+
+  const [start, setStart] = useState(7);
+  const [finish, setFinish] = useState(13);
   const [count, setCount] = useState(6);
 
-  const pageForward = () => {
-    setStart(start + 6);
-    setFinish(finish + 6);
-
-    const result = RESULT.slice(start, finish);
-
-    setCount(count + 1);
-
-    store.dispatch(addNewFilm(result));
-    store.dispatch(addCount(count));
-
-    setPage(pageNumber + 1);
-
-    console.log(store.getState());
-  };
-
-  const pageBack = () => {
-    if (pageNumber == 1) {
+  const pageForward = (e) => {
+    e.preventDefault();
+    if (pageNumber == maxPage) {
       return;
     } else {
+      setPage(pageNumber + 1);
+      setCount(count + 1);
+
+      setStart((start) => start + 6);
+      setFinish((finish) => finish + 6);
+      console.log(start);
+      console.log(finish);
+
+      const result = RESULT.slice(start, finish);
+
+      store.dispatch(addNewFilm(result));
+      store.dispatch(addCount(count));
+    }
+  };
+
+  const pageBack = (e) => {
+    e.preventDefault();
+    if (pageNumber > 2) {
       setPage(pageNumber - 1);
+      setCount(count - 1);
+
+      setStart((start) => start - 6);
+      setFinish((finish) => finish - 6);
+      console.log(start);
+      console.log(finish);
+
+      const result = RESULT.slice(start, finish);
+
+      store.dispatch(addNewFilm(result));
+      store.dispatch(addCount(count));
+    } else {
+      setPage(1);
+      setStart((start) => start - 6);
+      setFinish((finish) => finish - 6);
+      store.dispatch(addNewFilm(RESULT.slice(0, 6)));
+      store.dispatch(addCount(1));
+      return;
     }
   };
 
