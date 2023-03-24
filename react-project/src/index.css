@@ -1,0 +1,172 @@
+.mainBox {
+  margin: 0 auto;
+  height: 900px;
+  width: 900px;
+  border: solid black 1.5px;
+  border-radius: 5px;
+}
+.mainPage {
+  display: flex;
+  flex-direction: row;
+}
+
+button {
+  font-weight: 400;
+  font-style: normal;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border: none;
+  background-color: rgb(65, 94, 225);
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.mainHeader {
+  background-color: rgb(0, 119, 255);
+  height: 50px;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.login {
+  background-color: rgba(2, 255, 99, 0.904);
+  border: 0;
+  color: rgb(255, 255, 255);
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-left: 700px;
+}
+
+.homeHead {
+  color: white;
+}
+
+.mainFilter {
+  width: 250px;
+  height: 800px;
+  margin-top: 5px;
+  margin-left: 2px;
+  border: solid black 1px;
+  display: flex;
+  flex-direction: column;
+}
+
+.filterHead {
+  font-size: 20px;
+}
+
+.reset {
+  margin-left: 15px;
+}
+
+.select {
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.checkBox {
+  height: 500px;
+  margin-top: 15px;
+}
+
+.backForward {
+  margin-left: 23px;
+}
+
+.forward {
+  margin-left: 5px;
+}
+
+.bacl {
+  background-color: rgb(0, 153, 255);
+}
+
+.filmList {
+  border: solid black 1.5px;
+  height: 800px;
+  width: 700px;
+  margin-left: 15px;
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.filmCard {
+  margin-top: 5px;
+  border: solid black 1.5px;
+  height: 260px;
+  width: 280px;
+  display: flex;
+  flex-direction: row;
+}
+
+img {
+  width: 150px;
+}
+
+.raiting {
+  margin-left: 5px;
+  margin-top: 2px;
+}
+
+.filmName {
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  margin-left: -130px;
+}
+
+.detailesBox {
+  margin-top: 220px;
+  width: 130px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.detailes {
+  width: 130px;
+  border-radius: 0;
+  border-top: solid black 1.5px;
+  background-color: white;
+  color: black;
+}
+
+.cardHead {
+  display: flex;
+  flex-direction: row;
+}
+
+.filmName {
+  width: 100px;
+}
+
+.favoriteButton {
+  background-color: white;
+  color: black;
+  height: 15px;
+  width: 15px;
+  padding-top: 2px;
+  margin-left: 5px;
+}
+
+.laterButton {
+  background-color: white;
+  color: black;
+  height: 15px;
+  width: 15px;
+  padding-top: 3px;
+  margin-left: 5px;
+}
