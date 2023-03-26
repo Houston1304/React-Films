@@ -2,59 +2,21 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 import { checkFilter } from "../arrays/filterArray";
 import { list } from "../arrays/filmArray";
-import { combineReducers, createStore } from "redux";
+import {
+  store,
+  addNewFilm,
+  addCount,
+  switchFilter,
+  initialState,
+  switchYear,
+} from "../store/store";
 
-const optionFilter = [
+export const optionFilter = [
   { value: "Популярные по возрастанию", label: "Популярные по возрастанию" },
   { value: "Популярные по убыванию", label: "Популярные по убыванию" },
   { value: "Рейтинг по возрастанию", label: "Рейтинг по возрастанию" },
   { value: "Рейтинг по убыванию", label: "Рейтинг по убыванию" },
 ];
-
-const ADD_FILM = "ADD_FILM";
-const ADD_COUNT = "ADD_COUNT";
-
-function addNewFilm(film) {
-  return {
-    type: ADD_FILM,
-    film,
-  };
-}
-
-function addCount(count) {
-  return {
-    type: ADD_COUNT,
-    count,
-  };
-}
-
-export const initialState = list.slice(0, 6);
-
-export function addFilmArray(state = initialState, action) {
-  if (action.type === ADD_FILM) {
-    const newState = [...state];
-    newState.push(action.film);
-    return newState;
-  }
-
-  return state;
-}
-
-function currentCount(state = 1, action) {
-  switch (action.type) {
-    case ADD_COUNT:
-      return action.count;
-    default:
-      return state;
-  }
-}
-
-const filmAction = combineReducers({
-  addFilmArray,
-  currentCount,
-});
-
-export const store = createStore(filmAction);
 
 const year = [];
 
@@ -67,58 +29,58 @@ const RESULT = [];
 for (let i = 0; i < list.length; i++) {
   RESULT.push(list[i]);
 }
+let pageNumber = 1;
+let count = 5;
 
 const Pagination = () => {
-  const [pageNumber, setPage] = useState(1);
-
   const maxPage = Math.ceil(list.length / 6);
 
-  const [start, setStart] = useState(7);
-  const [finish, setFinish] = useState(13);
-  const [count, setCount] = useState(6);
-
-  const pageForward = (e) => {
-    e.preventDefault();
+  const pageForward = () => {
+    let start = 6;
+    let finish = 12;
     if (pageNumber == maxPage) {
       return;
     } else {
-      setPage(pageNumber + 1);
-      setCount(count + 1);
+      pageNumber = pageNumber + 1;
 
-      setStart((start) => start + 6);
-      setFinish((finish) => finish + 6);
-      console.log(start);
-      console.log(finish);
+      count = count + 1;
+
+      finish = (pageNumber + 1) * 6;
+      start = finish - 6;
 
       const result = RESULT.slice(start, finish);
-
+      console.log(result);
       store.dispatch(addNewFilm(result));
       store.dispatch(addCount(count));
+      console.log(count);
     }
   };
 
-  const pageBack = (e) => {
-    e.preventDefault();
-    if (pageNumber > 2) {
-      setPage(pageNumber - 1);
-      setCount(count - 1);
+  const pageBack = () => {
+    let start = 6;
+    let finish = 12;
+    if (pageNumber == 2) {
+      pageNumber = 1;
 
-      setStart((start) => start - 6);
-      setFinish((finish) => finish - 6);
-      console.log(start);
-      console.log(finish);
+      finish = 6;
+      start = finish - 6;
+
+      store.dispatch(addCount(1));
+
+      return;
+    } else if (pageNumber == 1) {
+      return;
+    } else {
+      pageNumber = pageNumber - 1;
+      count = count - 1;
+      console.log(count);
+      finish = (pageNumber - 1) * 6;
+      start = finish - 6;
 
       const result = RESULT.slice(start, finish);
-
       store.dispatch(addNewFilm(result));
       store.dispatch(addCount(count));
-    } else {
-      setPage(1);
-      setStart((start) => start - 6);
-      setFinish((finish) => finish - 6);
-      store.dispatch(addNewFilm(RESULT.slice(0, 6)));
-      store.dispatch(addCount(1));
-      return;
+      console.log(count);
     }
   };
 
@@ -150,6 +112,13 @@ const Check = ({ name }) => {
 };
 
 export const Filter = () => {
+  const handleChangeFilter = (selectedItem) => {
+    store.dispatch(switchFilter(selectedItem));
+  };
+
+  const handleYear = (selectedItem) => {
+    store.dispatch(switchYear(selectedItem));
+  };
   return (
     <div className="mainFilter">
       <div>
@@ -159,11 +128,14 @@ export const Filter = () => {
 
       <div className="optionBox">
         <Select
+          onChange={handleChangeFilter}
           className="select"
           options={optionFilter}
           placeholder={<div>Популярные по возрастанию</div>}
         />
+
         <Select
+          onChange={handleYear}
           className="select"
           options={year}
           placeholder={<div>Выберите год</div>}
