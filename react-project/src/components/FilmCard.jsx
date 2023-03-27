@@ -1,4 +1,19 @@
+import { store } from "../store/store";
+import { togglePopUp } from "../store/store";
+import { useSelector } from "react-redux";
+import { getCurrentUser } from "../storage/storage";
+
 export const FilmCard = ({ img, title, raiting }) => {
+  let toggle = useSelector((state) => state.currentToggle);
+  let isOpen = toggle;
+
+  const popUp = () => {
+    if (!getCurrentUser()) {
+      isOpen = true;
+
+      store.dispatch(togglePopUp(isOpen));
+    }
+  };
   return (
     <div className="filmCard">
       <img src={img}></img>
@@ -12,11 +27,13 @@ export const FilmCard = ({ img, title, raiting }) => {
             type="image"
             src="src\assets\favorite.png"
             className="favoriteButton"
+            onClick={popUp}
           ></input>
           <input
             type="image"
             src="src\assets\later.jpg"
             className="laterButton"
+            onClick={popUp}
           ></input>
         </div>
 

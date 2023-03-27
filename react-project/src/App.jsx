@@ -11,43 +11,31 @@ function App() {
   let filmList = useSelector((state) => state.addFilmArray);
   let filmCount = useSelector((state) => state.currentCount);
   let filmFilter = useSelector((state) => state.currentFilter);
-  let filmYear = useSelector((state) => state.currentYear);
 
   const [newList, setList] = useState(filmList);
   const [count, setCount] = useState(1);
   const [filter, setFilter] = useState("");
-  const [year, setYear] = useState("");
 
   function filterFilms() {
-    if (filmYear) {
-      setList(
-        list.filter(
-          (film) =>
-            String(new Date(String(film.release_date)).getFullYear()) ==
-            filmYear.value
-        )
-      );
-    }
-
     if (count == 1) {
       switch (filmFilter.value) {
         case "Популярные по возрастанию":
-          initialState.sort((a, b) => b.popularity - a.popularity);
+          newList.sort((a, b) => b.popularity - a.popularity);
           break;
       }
       switch (filmFilter.value) {
         case "Популярные по убыванию":
-          initialState.sort((a, b) => a.popularity - b.popularity);
+          newList.sort((a, b) => a.popularity - b.popularity);
           break;
       }
       switch (filmFilter.value) {
         case "Рейтинг по возрастанию":
-          initialState.sort((a, b) => b.raiting - a.raiting);
+          newList.sort((a, b) => b.raiting - a.raiting);
           break;
       }
       switch (filmFilter.value) {
         case "Рейтинг по убыванию":
-          initialState.sort((a, b) => a.raiting - b.raiting);
+          newList.sort((a, b) => a.raiting - b.raiting);
           break;
       }
       return newList;
@@ -81,7 +69,6 @@ function App() {
     setCount(filmCount);
 
     setFilter(filmFilter);
-    setYear(filmYear);
   });
 
   useEffect(() => {
@@ -95,7 +82,7 @@ function App() {
 
         <div className="mainPage">
           <Filter />
-          <FilmList filmList={initialState} />
+          <FilmList filmList={newList.slice(0, 6)} />
         </div>
       </div>
     );
