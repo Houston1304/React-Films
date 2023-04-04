@@ -2,7 +2,7 @@
 export const list = [
   {
     adult: false,
-    img: "/qjGrUmKW78MCFG8PTLDBp67S27p.jpg",
+    img: "https://avatars.mds.yandex.net/get-kinopoisk-image/4303601/70ccadc6-2e1d-48f0-bcbb-4fda8d0de0d9/1920x",
     genre_ids: [16, 28, 12, 14],
     id: 635302,
     original_language: "ja",

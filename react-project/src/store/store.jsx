@@ -5,23 +5,19 @@ import { useEffect } from "react";
 export const initialState = list.slice(0, 6);
 
 const ADD_FILM = "ADD_FILM";
-const ADD_COUNT = "ADD_COUNT";
+
 const SWITCH_FILTER = "SWITCH_FILTER";
 const SWITCH_YEAR = "SWITCH_YEAR";
 const SWITCH_GENRE = "SWITCH_GENRE";
 const TOGGLE_POPUP = "TOGGLE_POPUP";
+const CURRENT_PAGE = "PAGE_FORWARD";
+const SWITCH_GRADE = "SWITCH_GRADE";
+const SWITCH_POPULARITY = "SWITCH_POPULARITY";
 
 export function addNewFilm(film) {
   return {
     type: ADD_FILM,
-    film,
-  };
-}
-
-export function addCount(count) {
-  return {
-    type: ADD_COUNT,
-    count,
+    payload: film,
   };
 }
 
@@ -53,20 +49,29 @@ export function togglePopUp(toggle) {
   };
 }
 
-function addFilmArray(state = initialState, action) {
-  if (action.type === ADD_FILM) {
-    const newState = [...state];
-    newState.push(action.film);
-    return newState;
-  }
-
-  return state;
+export function switchGrade(grade) {
+  return {
+    type: SWITCH_GRADE,
+    grade,
+  };
 }
 
-function currentCount(state = 1, action) {
+export function switchPopularity(popularity) {
+  return {
+    type: SWITCH_POPULARITY,
+    popularity,
+  };
+}
+
+export const chengeNumberPage = (text) => {
+  return { type: CURRENT_PAGE, payload: text };
+};
+
+function addFilmArray(state = list.slice(0, 6), action) {
   switch (action.type) {
-    case ADD_COUNT:
-      return action.count;
+    case ADD_FILM:
+      return { ...state, film: action.payload };
+
     default:
       return state;
   }
@@ -99,6 +104,24 @@ function currentGenre(state = "", action) {
   }
 }
 
+function currentGrade(state = "", action) {
+  switch (action.type) {
+    case SWITCH_GRADE:
+      return action.grade;
+    default:
+      return state;
+  }
+}
+
+function currentPopularity(state = "", action) {
+  switch (action.type) {
+    case SWITCH_POPULARITY:
+      return action.popularity;
+    default:
+      return state;
+  }
+}
+
 function currentToggle(state = false, action) {
   switch (action.type) {
     case TOGGLE_POPUP:
@@ -108,13 +131,29 @@ function currentToggle(state = false, action) {
   }
 }
 
+const defaultState = {
+  currentPage: 1,
+};
+
+const pageSwitch = (state = defaultState, action) => {
+  switch (action.type) {
+    case CURRENT_PAGE:
+      return { ...state, currentPage: action.payload };
+
+    default:
+      return state;
+  }
+};
+
 const filmAction = combineReducers({
   addFilmArray,
-  currentCount,
   currentFilter,
   currentYear,
   currentGenre,
   currentToggle,
+  pageSwitch,
+  currentGrade,
+  currentPopularity,
 });
 
 export const store = createStore(filmAction);

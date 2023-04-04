@@ -1,12 +1,19 @@
 import { FilmCard } from "./FilmCard";
-import { list } from "../arrays/filmArray";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-export const FilmList = ({ filmList }) => {
+export const FilmList = ({ filmList, favorite, later }) => {
   return (
     <div className="filmList">
       {filmList.map(({ id, img, title, raiting }) => (
-        <FilmCard key={id} img={img} title={title} raiting={raiting}></FilmCard>
+        <FilmCard
+          key={id}
+          id={id}
+          img={img}
+          title={title}
+          raiting={raiting}
+          favorite={favorite}
+          later={later}
+        ></FilmCard>
       ))}
     </div>
   );

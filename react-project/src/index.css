@@ -39,11 +39,90 @@ button {
   color: rgb(255, 255, 255);
   margin-top: 7px;
   margin-bottom: 7px;
-  margin-left: 700px;
+  margin-left: 400px;
 }
 
-.homeHead {
+.homeSearch {
+  display: flex;
+  flex-direction: row;
+  background-image: url("src\\assets\\magnifying-glass.png");
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 250px;
+  font-size: 20px;
   color: white;
+}
+
+.searchIcon {
+  margin-left: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+.searchSelect {
+  display: flex;
+  flex-direction: column;
+}
+
+.searchFilm {
+  margin-top: 20px;
+  margin-left: 15px;
+}
+
+.searchLabel {
+  display: flex;
+  flex-direction: column;
+  margin-left: 100px;
+}
+
+.searchHead {
+  margin-left: 15px;
+  font-size: 23px;
+}
+
+.titleSearch {
+  margin-top: 15px;
+  width: 350px;
+  border-bottom: solid rgba(0, 0, 0, 0.137) 1px;
+}
+
+.selectOption {
+  margin-top: 15px;
+  border: 0;
+  border-bottom: solid rgba(0, 0, 0, 0.137) 1px;
+  height: 19px;
+}
+
+.searchForm {
+  display: flex;
+  flex-direction: row;
+}
+
+.foundDetails {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+
+.foundTitle {
+  margin-top: 15px;
+  font-size: 23px;
+}
+
+.foundButtons {
+  margin-top: 60px;
+  margin-left: 15px;
+}
+
+#foundAccept {
+  margin-right: 15px;
+}
+.foundLabel {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 18px;
 }
 
 .mainFilter {
@@ -153,8 +232,7 @@ img {
 }
 
 .favoriteButton {
-  background-color: white;
-  color: black;
+  background-color: rgb(255, 255, 255);
   height: 15px;
   width: 15px;
   padding-top: 2px;
@@ -216,4 +294,78 @@ img {
   margin-top: 5px;
   margin-left: 225px;
   width: 120px;
+}
+
+.mainDetailes {
+  color: white;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  background-position: center;
+}
+
+.filmLabel {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  margin-top: 80px;
+}
+
+.blur {
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.507);
+}
+
+.blurDetailes {
+  display: flex;
+  flex-direction: row;
+}
+
+.detailesImage {
+  margin-left: 100px;
+  margin-top: 50px;
+  height: 300px;
+  width: 200px;
+}
+
+.blurLabel {
+  margin-top: 10px;
+}
+
+#mainLabel {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.detailesDescription {
+  width: 600px;
+  margin-left: 100px;
+  margin-top: 20px;
+}
+
+.allDetailes {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+}
+.detailesInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailesLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleDeatiles {
+  width: 350px;
+  margin-top: 15px;
+  border-top: solid rgba(0, 0, 0, 0.137) 1px;
+}
+
+.backMain {
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-bottom: 5px;
 }

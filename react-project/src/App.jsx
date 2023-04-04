@@ -2,71 +2,103 @@ import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import { FilmList } from "./components/FilmList";
 import { Filter } from "./components/Filter";
-import { optionFilter } from "./components/Filter";
-import { list } from "./arrays/filmArray";
+import { initialState, store, togglePopUp } from "./store/store";
+import {
+  getCurrentUser,
+  saveFavoriteFilm,
+  getFavoriteFilm,
+  saveWatchLater,
+  getWatchLater,
+} from "./storage/storage";
 import { useSelector } from "react-redux";
-import { initialState } from "./store/store";
+import { createBrowserRouter } from "react-router-dom";
+import { Detailes } from "./components/Deatiles";
+import { Search } from "./components/Search";
+import { FoundFilm } from "./components/FoundFilm";
+
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/detailes/:id",
+    element: <Detailes />,
+  },
+  {
+    path: "/search",
+    element: <Search />,
+  },
+  {
+    path: "/search/film",
+    element: <FoundFilm />,
+  },
+]);
 
 function App() {
-  let filmList = useSelector((state) => state.addFilmArray);
-  let filmCount = useSelector((state) => state.currentCount);
-  let filmFilter = useSelector((state) => state.currentFilter);
+  const filmFilter = useSelector((state) => state.currentFilter);
 
-  const [newList, setList] = useState(filmList);
-  const [count, setCount] = useState(1);
+  const filmList = useSelector((state) => state.addFilmArray.film);
+
+  const [newList, setList] = useState(initialState);
+
   const [filter, setFilter] = useState("");
 
-  function filterFilms() {
-    if (count == 1) {
-      switch (filmFilter.value) {
-        case "Популярные по возрастанию":
-          newList.sort((a, b) => b.popularity - a.popularity);
-          break;
-      }
-      switch (filmFilter.value) {
-        case "Популярные по убыванию":
-          newList.sort((a, b) => a.popularity - b.popularity);
-          break;
-      }
-      switch (filmFilter.value) {
-        case "Рейтинг по возрастанию":
-          newList.sort((a, b) => b.raiting - a.raiting);
-          break;
-      }
-      switch (filmFilter.value) {
-        case "Рейтинг по убыванию":
-          newList.sort((a, b) => a.raiting - b.raiting);
-          break;
-      }
-      return newList;
+  const [favoriteList, setFavorite] = useState(getFavoriteFilm() || []);
+  const [letList, setLater] = useState(getWatchLater() || []);
+
+  const favorite = (isOpen, id) => {
+    if (!getCurrentUser()) {
+      isOpen = true;
+
+      store.dispatch(togglePopUp(isOpen));
+    } else if (getFavoriteFilm().includes(id)) {
+      saveFavoriteFilm(favoriteList.includes(!id));
     } else {
-      switch (filmFilter.value) {
-        case "Популярные по возрастанию":
-          newList[count].sort((a, b) => b.popularity - a.popularity);
-          break;
-      }
-      switch (filmFilter.value) {
-        case "Популярные по убыванию":
-          newList[count].sort((a, b) => a.popularity - b.popularity);
-          break;
-      }
-      switch (filmFilter.value) {
-        case "Рейтинг по возрастанию":
-          newList[count].sort((a, b) => b.raiting - a.raiting);
-          break;
-      }
-      switch (filmFilter.value) {
-        case "Рейтинг по убыванию":
-          newList[count].sort((a, b) => a.raiting - b.raiting);
-          break;
-      }
-      return newList[count];
+      setFavorite([...favoriteList, id]);
+      saveFavoriteFilm(JSON.stringify([...favoriteList, id]));
     }
+  };
+
+  const later = (isOpen, id) => {
+    if (!getCurrentUser()) {
+      isOpen = true;
+
+      store.dispatch(togglePopUp(isOpen));
+    } else if (getWatchLater().includes(id)) {
+      saveWatchLater(letList.includes(!id));
+    } else {
+      setLater([...letList, id]);
+      saveWatchLater([...letList, id]);
+    }
+  };
+
+  function filterFilms() {
+    switch (filmFilter.value) {
+      case "Популярные по возрастанию":
+        filmList.sort((a, b) => b.popularity - a.popularity);
+        break;
+    }
+    switch (filmFilter.value) {
+      case "Популярные по убыванию":
+        filmList.sort((a, b) => a.popularity - b.popularity);
+        break;
+    }
+    switch (filmFilter.value) {
+      case "Рейтинг по возрастанию":
+        filmList.sort((a, b) => b.raiting - a.raiting);
+        break;
+    }
+    switch (filmFilter.value) {
+      case "Рейтинг по убыванию":
+        filmList.sort((a, b) => a.raiting - b.raiting);
+        break;
+    }
+    return filmList;
   }
 
   useEffect(() => {
     setList(filmList);
-    setCount(filmCount);
 
     setFilter(filmFilter);
   });
@@ -75,29 +107,16 @@ function App() {
     filterFilms();
   });
 
-  if (count == 1) {
-    return (
-      <div className="mainBox">
-        <Header />
+  return (
+    <div className="mainBox">
+      <Header />
 
-        <div className="mainPage">
-          <Filter />
-          <FilmList filmList={newList.slice(0, 6)} />
-        </div>
+      <div className="mainPage">
+        <Filter />
+        <FilmList favorite={favorite} later={later} filmList={newList} />
       </div>
-    );
-  } else {
-    return (
-      <div className="mainBox">
-        <Header />
-
-        <div className="mainPage">
-          <Filter />
-          <FilmList filmList={newList[count]} />
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;

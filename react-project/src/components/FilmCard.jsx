@@ -1,39 +1,65 @@
 import { store } from "../store/store";
 import { togglePopUp } from "../store/store";
 import { useSelector } from "react-redux";
-import { getCurrentUser } from "../storage/storage";
+import { getFavoriteFilm, getWatchLater } from "../storage/storage";
+import { Link, useNavigate } from "react-router-dom";
 
-export const FilmCard = ({ img, title, raiting }) => {
+export const FilmCard = ({ id, img, title, raiting, favorite, later }) => {
   let toggle = useSelector((state) => state.currentToggle);
   let isOpen = toggle;
 
-  const popUp = () => {
-    if (!getCurrentUser()) {
-      isOpen = true;
+  const navigate = useNavigate();
 
-      store.dispatch(togglePopUp(isOpen));
-    }
+  const handleDeatiles = () => {
+    navigate("/detailes");
   };
+
+  const handleFavorite = (e) => {
+    e.preventDefault();
+    favorite(isOpen, id);
+  };
+
+  const handleLater = (e) => {
+    e.preventDefault();
+    later(isOpen, id);
+  };
+
+  let favoriteSrc = `src\\assets\\favorite.png`;
+
+  if (getFavoriteFilm() && getFavoriteFilm().includes(id)) {
+    favoriteSrc = `src\\assets\\golden_favorite.png`;
+  }
+
+  let laterSrc = `src\\assets\\later.jpg`;
+
+  if (getWatchLater() && getWatchLater().includes(id)) {
+    laterSrc = `src\\assets\\grey_later.jpg`;
+  }
+
   return (
     <div className="filmCard">
       <img src={img}></img>
       <div className="detailesBox">
-        <button className="detailes">Подробнее</button>
+        <Link to={`/detailes/${id}`} state={id}>
+          <button className="detailes" onClick={handleDeatiles}>
+            Подробнее
+          </button>
+        </Link>
       </div>
       <div className="description">
         <div className="cardHead">
           <p className="raiting">Рейтинг: {raiting}</p>
           <input
             type="image"
-            src="src\assets\favorite.png"
+            src={favoriteSrc}
             className="favoriteButton"
-            onClick={popUp}
+            onClick={handleFavorite}
           ></input>
           <input
             type="image"
-            src="src\assets\later.jpg"
+            src={laterSrc}
             className="laterButton"
-            onClick={popUp}
+            onClick={handleLater}
           ></input>
         </div>
 
